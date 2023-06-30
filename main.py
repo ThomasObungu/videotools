@@ -1,4 +1,5 @@
 import  pyfiglet, subprocess, os, tkinter, re
+import moviepy.editor as moviepy
 from tkinter import filedialog
 
 #Functions
@@ -9,7 +10,7 @@ def search_for_video_file():
     tk.withdraw()
 
     filetypes = (
-        ("Video files", "*.mp4;*.avi;*.mkv;*.mov;*.m4a;*.3gp;*.3g2;*.mj2;*"),
+        ("Video files", "*.mp4;*.avi;*.mkv;*.mov;*.m4a"),
         ("All files", "*.*")
     )
     file_path = filedialog.askopenfilename(parent=tk, filetypes=filetypes)
@@ -24,51 +25,92 @@ def convert_video_to_mp3(input_file, bitrate, sample_rate):
     ffmpeg_cmd = [
         
         "ffmpeg",
+        "-loglevel", "quiet",
         "-i", input_file,
         "-vn",
         "-acodec", "libmp3lame",
-        "-ab", bitrate,
-        "-ar", sample_rate,
+        "-ab", str(f'{bitrate}k'),
+        "-ar", str(sample_rate),
         "-y",
-        os.path.join(output_directory, f'{"".join(re.split(r".mp4|.avi|.mkv|.mov|.m4a|.3gp|3g2|mj2","".join(os.path.basename(input_file))))}.mp3')
+        os.path.join(output_directory, f'{"".join(re.split(r".mp4|.avi|.mkv|.mov|.m4a","".join(os.path.basename(input_file))))}.mp3')
     ]
 
     try:
         subprocess.run(ffmpeg_cmd, check=True)
         print("Successfully converted!")
-        input("Press any key to exit...")
+
     except subprocess.CalledProcessError as error:
         print("Conversion failed.")
-        input("Press any key to exit...")
+
+
+def convert_to_mp4(input_file):
+    input_file = os.path.abspath(input_file)
+
+    file = moviepy.VideoFileClip(input_file)
+    file.write_videofile(f'{os.path.basename(input_file)}.mp4')
+
 
 print(f"{pyfiglet.figlet_format('VideoTools')}", flush=True)
 
 #Commands 
-
-def comds():
-    for i in commands:
-        print(i)
-
-def vidtoaud():
-    file = search_for_video_file()
-    convert_video_to_mp3(file, '192k', '44100')
 
 commands = [
     'ytomp4 - Youtube to .mp4',
     'yttomp3 - Youtube to .mp3',
     'vidresc - Video resolution & aspect changer',
     'vidspeedc - Video speed changer',
-    'vidtoaud - Video(.mp4|.avi|.mkv|.mov|.m4a|.3gp|3g2|mj2) to aduio(.mp3)',
+    'vidtoaud - Video(.mp4|.avi|.mkv|.mov|.m4a) to aduio(.mp3)',
     ]
 
-menu_choice=(input("Type comds for a list of commands \n\n>> "))
+def comds():
+    for i in commands:
+        print(i)
+    
 
-choices={
+def vidtoaud(bitrate, samplerate):
+    file = search_for_video_file()
+    convert_video_to_mp3(file, bitrate, samplerate)
+
+# Command line 
+
+def  menu():
+
+    choices={
     'comds' : comds,
     'vidtoaud' : vidtoaud,
     }
 
-choices[menu_choice]()
+    print("Type comds for a list of commands")
+    
+    while True:
+
+        menu_choice=(input("\n>> ")).lower()
+        seperators=[","," ",]
+        command=re.split('|'.join(map(re.escape,seperators)), menu_choice)
+        command=[i for i in command if i != '']
+
+        bitrate=192
+        samplerate=44100
+
+        if command[0] in choices and len(command) > 1:
+            if command[0] == 'vidtoaud':
+                for i in command[1:]:
+                    i_name, i_value = i.split('=')
+                    if i_name == 'bitrate':
+                        bitrate = int(i_value)
+                    elif i_name == 'samplerate':
+                        samplerate = int(i_value)
+                choices[command[0]](bitrate,samplerate)
+                continue
+        else:
+            choices[command[0]](bitrate,samplerate)
+            continue
+        
+        choices[menu_choice]()
+
+menu()
+
+
 
 
 
