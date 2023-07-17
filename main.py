@@ -60,14 +60,39 @@ class FFmpegProcess(FileManipulation):
             print("Successfully converted!")
         except subprocess.CalledProcessError as error:
             print("Conversion failed.")
+            
+    def speed_up_video(self, **kwargs):
 
+        speed = float(kwargs.get('speed', 1))
 
-class Commands(FFmpegProcess):
+        file = self.search_for_file("video")
+        input_file = os.path.abspath(file)
+        output_directory = self.video_directory
+        
+        ffmpeg_cmd = [
+            "ffmpeg",
+            "-loglevel", "quiet",
+            "-i", input_file,
+            "-filter_complex", f'[0:v]setpts={1/speed}*PTS[v];[0:a]atempo={speed}[a]',
+            "-map", '[v]',
+            "-map", '[a]',
+            os.path.join(output_directory, f"{os.path.basename(input_file).split('.')[0]}_{speed}x.mp4")
+        ]
+
+        try:
+            subprocess.run(ffmpeg_cmd, check=True)
+            print("Successfully converted!")
+        except subprocess.CalledProcessError as error:
+            print("Conversion failed.")
+
+f'()'
+class Commands(FFmpegProcess):  
     def __init__(self):
         super().__init__()
         self.commands = {
             'comds': self.display_commands,
-            'vidtoaud': self.convert_video_to_audio
+            'vidtoaud': self.convert_video_to_audio,
+            'vidspeedc': self.speed_up_video
         }
 
     def display_commands(self):
