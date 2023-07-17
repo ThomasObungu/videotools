@@ -27,7 +27,6 @@ class FileManipulation:
             print(f"Selected file: {file_path}")
         return file_path
 
-
 class FFmpegProcess(FileManipulation):
     def __init__(self):
         super().__init__()
@@ -85,14 +84,38 @@ class FFmpegProcess(FileManipulation):
         except subprocess.CalledProcessError as error:
             print("Conversion failed.")
 
-f'()'
+    def change_video_res(self, **kwargs):
+        
+        resolution = float(kwargs.get('res', 1))
+
+        file = self.search_for_file("video")
+        input_file = os.path.abspath(file)
+        output_directory = self.video_directory
+        
+        ffmpeg_cmd = [
+            "ffmpeg",
+            #"-loglevel", "quiet",
+            "-y", "-i", input_file, "-vf",
+            f"scale={resolution}:-2,setsar=1:1", "-c:v", "libx264", 
+            "-c:a", "copy",
+            os.path.join(output_directory, f"{os.path.basename(input_file).split('.')[0]}_{resolution}x{resolution}.mp4")
+        ]
+
+        try:
+            subprocess.run(ffmpeg_cmd, check=True)
+            print("Successfully converted!")
+        except subprocess.CalledProcessError as error:
+            print("Conversion failed.")
+
+
 class Commands(FFmpegProcess):  
     def __init__(self):
         super().__init__()
         self.commands = {
             'comds': self.display_commands,
             'vidtoaud': self.convert_video_to_audio,
-            'vidspeedc': self.speed_up_video
+            'vidspeedc': self.speed_up_video,
+            'vidresc' : self.change_video_res
         }
 
     def display_commands(self):
