@@ -12,8 +12,6 @@ class Commands(FFmpegProcess):
 
     def display_commands(self):
         commands = [
-            'ytomp4 - Youtube to .mp4',
-            'yttomp3 - Youtube to .mp3',
             'vidresc - Video resolution & aspect changer',
             'vidspeedc - Video speed changer',
             'vidtoaud - Video(.mp4|.avi|.mkv|.mov|.m4a) to audio(.mp3)',
