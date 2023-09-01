@@ -1,6 +1,11 @@
 # videotools
 Simple command line interface program that allows audio and video file manipulation. Made using Python 3 but utilizes the power of FFmepg.
 FFmpeg needed to use and Pyfiglet needed to be installed. 
+# Instructions
+1. Go to releases and download the source code.zip
+2. Extract the zip and ensure the dependancies are downloaded and the Audio and Video Folders are in place
+3. Run main.py
+#
 # Dependencies
 Python 3.8+
 
