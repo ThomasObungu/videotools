@@ -20,8 +20,13 @@ Learn how to install FFmpeg here : https://www.wikihow.com/Install-FFmpeg-on-Win
 1. **vidresc res=``RESOLUTION e.g. 64``** -> Allows changing of video reslution but in square format e.g resolution of 256 would result in 256x256 video
 2. **vidspeedc speed=``SPEED e.g. 1.5``** -> Allows changing of video speed
 3. **vidtoaud bitrate=``BITRATE e.g. 32`` samplerate=``SAMPLERATE e.g 220500``** -> Converts video to an .mp3 audio format. Allows the dynamic bitrate and sample rate. Default samplerate and bitrate is 192k and 44100hz
-#
+# 
+# Example commands
+![image](https://github.com/ThomasObungu/videotools/assets/108408219/9cb1e7f8-3a77-4a86-b820-bf70260c0f19)
+# Output 
+All data output goes neatly into the video and audio folders!
+![image](https://github.com/ThomasObungu/videotools/assets/108408219/5186ed76-17c7-4c7b-9b3d-69b868ca974e)
 
-![image](https://github.com/Tawitg/videotools/assets/108408219/4e89da57-3721-4e31-9b65-82082a0a9b92)
+
 
 
