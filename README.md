@@ -27,7 +27,7 @@ Learn how to install FFmpeg here : https://www.wikihow.com/Install-FFmpeg-on-Win
 All data output goes neatly into the video and audio folders!
 ![image](https://github.com/ThomasObungu/videotools/assets/108408219/5186ed76-17c7-4c7b-9b3d-69b868ca974e)
 # 
-Note you can use the vidtoaud as a replacement for a mp4 to mp3 converters
+Note: you can use the vidtoaud as a replacement for a mp4 to mp3 converters
 ![image](https://github.com/ThomasObungu/videotools/assets/108408219/c4f10c1d-608c-40ee-adee-2b4b17dad6b8)
 
 
